@@ -1,0 +1,53 @@
+server:
+  port: ${PORT:8086}
+spring:
+  application:
+    name: emails-ms
+  config:
+    import: optional:file:.env[.properties]
+  kafka:
+    bootstrap-servers: ${KAFKA_HOST}:${KAFKA_PORT} # Dirección de tu clúster Kafka
+    consumer:
+      group-id: email-service
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      auto-offset-reset: earliest
+    topics:
+      ASK_CREATED_TOPIC: ASK_CREATED_TOPIC
+      BOOKING_CREATED_TOPIC: BOOKING_CREATED_TOPIC
+      BOOKING_RECEIPT_GENERATED_TOPIC: BOOKING_RECEIPT_GENERATED_TOPIC
+      REVIEW_CREATED_TOPIC: REVIEW_CREATED_TOPIC
+email:
+  config:
+    username: ${EMAIL_ACCOUNT}
+    password: ${EMAIL_PASSWORD}
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      users-service:
+        register-health-indicator: true
+        sliding-window-size: 5
+        sliding-window-type: count_based
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 10s
+        automatic-transition-from-open-to-half-open-enabled: true
+        permitted-number-of-calls-in-half-open-state: 3
+        ignored-exceptions:
+          - feign.FeignException$FeignClientException
+      rooms-service:
+        register-health-indicator: true
+        sliding-window-size: 5
+        sliding-window-type: count_based
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 10s
+        automatic-transition-from-open-to-half-open-enabled: true
+        permitted-number-of-calls-in-half-open-state: 3
+        ignored-exceptions:
+          - feign.FeignException$FeignClientException
+
+client:
+  users-ms:
+    url: ${USERS_MS_URL}
+  rooms-ms:
+    url: ${ROOMS_MS_URL}
