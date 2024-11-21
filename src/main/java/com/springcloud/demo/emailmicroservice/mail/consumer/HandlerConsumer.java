@@ -2,10 +2,12 @@ package com.springcloud.demo.emailmicroservice.mail.consumer;
 
 import com.springcloud.demo.emailmicroservice.mail.service.HandlerService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 @Service
 @RequiredArgsConstructor
@@ -41,9 +43,10 @@ public class HandlerConsumer {
      * Work un lambda environment
      * It will be ignored in local
      */
-    public Consumer<String> handleNewAskServerless() {
+    @Bean
+    public Function<String, String> handleNewAskServerless() {
         return message -> {
-            System.out.println("message = " + message);
+            return message;
         };
     }
 }

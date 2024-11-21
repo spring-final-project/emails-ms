@@ -6,7 +6,7 @@ spring:
   config:
     import: optional:file:.env[.properties]
   kafka:
-    bootstrap-servers: ${KAFKA_HOST}:${KAFKA_PORT} # Dirección de tu clúster Kafka
+    bootstrap-servers: ${KAFKA_URL}
     consumer:
       group-id: email-service
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
