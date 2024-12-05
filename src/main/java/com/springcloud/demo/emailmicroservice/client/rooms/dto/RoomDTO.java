@@ -1,5 +1,6 @@
 package com.springcloud.demo.emailmicroservice.client.rooms.dto;
 
+import com.springcloud.demo.emailmicroservice.client.users.dto.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,4 +25,5 @@ public class RoomDTO {
     private Integer simpleBeds;
     private Integer mediumBeds;
     private Integer doubleBeds;
+    private UserDTO owner;
 }

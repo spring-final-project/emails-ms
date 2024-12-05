@@ -2,6 +2,7 @@ package com.springcloud.demo.emailmicroservice.mail.service;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
@@ -19,6 +20,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 @Service
+@Slf4j
 public class MailService {
 
     @Autowired
@@ -38,7 +40,12 @@ public class MailService {
         simpleMailMessage.setSubject(subject);
         simpleMailMessage.setText(message);
 
-        javaMailSender.send(simpleMailMessage);
+        try {
+            javaMailSender.send(simpleMailMessage);
+        } catch (Exception e) {
+            log.error("Error sending email");
+            e.printStackTrace();
+        }
     }
 
     public void sendEmailWithAttachment(String to, String subject, String message, String filePath) throws MessagingException, URISyntaxException, IOException {
@@ -52,7 +59,12 @@ public class MailService {
 
         mimeMessageHelper.addAttachment("comprobante.pdf", getFile(filePath));
 
-        javaMailSender.send(mimeMessage);
+        try {
+            javaMailSender.send(mimeMessage);
+        } catch (Exception e) {
+            log.error("Error sending email");
+            e.printStackTrace();
+        }
     }
 
     InputStreamSource getFile(String filePath) throws URISyntaxException, IOException {

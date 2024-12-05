@@ -1,5 +1,7 @@
 package com.springcloud.demo.emailmicroservice.client.booking.dto;
 
+import com.springcloud.demo.emailmicroservice.client.rooms.dto.RoomDTO;
+import com.springcloud.demo.emailmicroservice.client.users.dto.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,8 +16,8 @@ public class BookingDTO {
     private String receiptUrl;
     private String checkIn;
     private String checkOut;
-    private String userId;
-    private String roomId;
     private Integer rating;
     private String review;
+    private UserDTO user;
+    private RoomDTO room;
 }
